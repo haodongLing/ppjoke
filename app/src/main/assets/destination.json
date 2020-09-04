@@ -1,0 +1,26 @@
+{
+  "main/tabs/dash": {
+    "isFragment": true,
+    "asStarter": false,
+    "needLogin": false,
+    "pageUrl": "main/tabs/dash",
+    "className": "com.haodong.practice.ppjoke.ui.dashboard.DashboardFragment",
+    "id": 806431219
+  },
+  "main/tabs/home": {
+    "isFragment": true,
+    "asStarter": true,
+    "needLogin": false,
+    "pageUrl": "main/tabs/home",
+    "className": "com.haodong.practice.ppjoke.ui.home.HomeFragment",
+    "id": 451238625
+  },
+  "main/tabs/notification": {
+    "isFragment": true,
+    "asStarter": false,
+    "needLogin": false,
+    "pageUrl": "main/tabs/notification",
+    "className": "com.haodong.practice.ppjoke.ui.notifications.NotificationsFragment",
+    "id": 1143752267
+  }
+}
