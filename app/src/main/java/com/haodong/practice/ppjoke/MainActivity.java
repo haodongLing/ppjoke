@@ -10,6 +10,7 @@ import com.haodong.practice.ppjoke.view.AppBottomBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -29,10 +30,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
                 .build();
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 //        NavigationUI.setupWithNavController(navView, navController);
-        NavGraphBuilder.build(navController);
+        NavGraphBuilder.build(navController, this, fragment.getId());
 
         navView.setOnNavigationItemSelectedListener(this);
     }
