@@ -1,4 +1,4 @@
-package com.haodong.practice.libcommon.global.utils;
+package com.haodong.practice.libcommon.utils;
 
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;

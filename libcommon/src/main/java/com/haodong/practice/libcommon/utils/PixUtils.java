@@ -1,4 +1,4 @@
-package com.haodong.practice.libcommon.global.utils;
+package com.haodong.practice.libcommon.utils;
 
 import android.util.DisplayMetrics;
 

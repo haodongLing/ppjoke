@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
-import com.haodong.practice.libcommon.global.view.ViewHelper;
+import com.haodong.practice.libcommon.view.ViewHelper;
 
 import androidx.annotation.Nullable;
 

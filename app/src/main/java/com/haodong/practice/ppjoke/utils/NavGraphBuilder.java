@@ -3,6 +3,7 @@ package com.haodong.practice.ppjoke.utils;
 import android.content.ComponentName;
 
 
+import com.haodong.practice.libcommon.global.AppGlobals;
 import com.haodong.practice.ppjoke.FixFragmentNavigator;
 import com.haodong.practice.ppjoke.model.Destination;
 

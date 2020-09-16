@@ -13,10 +13,9 @@ import android.widget.ProgressBar;
 
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ui.PlayerControlView;
-import com.haodong.practice.libcommon.global.utils.PixUtils;
+import com.haodong.practice.libcommon.utils.PixUtils;
 import com.haodong.practice.ppjoke.R;
 import com.haodong.practice.ppjoke.exoplayer.IPlayTarget;
-import com.haodong.practice.ppjoke.exoplayer.PageListPlay;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

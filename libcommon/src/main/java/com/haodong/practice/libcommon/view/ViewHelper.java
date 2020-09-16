@@ -1,4 +1,4 @@
-package com.haodong.practice.libcommon.global.view;
+package com.haodong.practice.libcommon.view;
 
 import android.annotation.TargetApi;
 import android.content.res.TypedArray;
