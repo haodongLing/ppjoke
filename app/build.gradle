@@ -13,6 +13,18 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        defaultConfig {
+            ndk {
+                // 设置支持的SO库架构
+                abiFilters 'armeabi-v7a', 'x86'
+            }
+        }
+    }
+    sourceSets {
+        main {
+            jni.srcDirs = [] //禁止使用默认的ndk编译系统
+            jniLibs.srcDir(['libs/jni-libs'])
+        }
     }
 
     buildTypes {

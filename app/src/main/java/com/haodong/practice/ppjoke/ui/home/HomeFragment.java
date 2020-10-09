@@ -1,10 +1,12 @@
 package com.haodong.practice.ppjoke.ui.home;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 
 import com.haodong.practice.libnavannotation.FragmentDestination;
+import com.haodong.practice.ppjoke.exoplayer.PageListPlayDetector;
 import com.haodong.practice.ppjoke.ui.AbsListFragment;
 import com.haodong.practice.ppjoke.model.Feed;
 import com.haodong.practice.ppjoke.ui.AbsViewModel;
@@ -26,7 +28,8 @@ import androidx.paging.PagedListAdapter;
 @FragmentDestination(pageUrl = "main/tabs/home", asStarter = true)
 public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
     private String feedType;
-
+    private PageListPlayDetector playDetector;
+    private boolean shouldPause = true;
     private HomeViewModel homeViewModel;
 
     @Override
@@ -70,6 +73,8 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
                 }
             });
         }
+        playDetector = new PageListPlayDetector(this, mRecyclerView);
+        mViewModel.setFeedType(feedType);
     }
 
     @Override
@@ -88,13 +93,54 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
                 if (data != null && data.size() > 0) {
                     MutablePageKeyedDataSource<Feed> dataSource = new MutablePageKeyedDataSource<>();
                     dataSource.data.addAll(data);
-                   PagedList<Feed> pagedList= dataSource.buildNewPagedList(config);
+                    PagedList<Feed> pagedList = dataSource.buildNewPagedList(config);
                     submitList(pagedList);
                 }
             }
         });
 
     }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {
+            playDetector.onPause();
+        } else {
+            playDetector.onResume();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (shouldPause) {
+            playDetector.onPause();
+        }
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        shouldPause = true;
+        //由于沙发Tab的几个子页面 复用了HomeFragment。
+        //我们需要判断下 当前页面 它是否有ParentFragment.
+        //当且仅当 它和它的ParentFragment均可见的时候，才能恢复视频播放
+        if (getParentFragment() != null) {
+            if (getParentFragment().isVisible() && isVisible()) {
+                Log.e("homefragment", "onResume: feedtype:" + feedType);
+                playDetector.onResume();
+            }
+        } else {
+            if (isVisible()) {
+                Log.e("homefragment", "onResume: feedtype:" + feedType);
+                playDetector.onResume();
+            }
+        }
+    }
+
+
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {

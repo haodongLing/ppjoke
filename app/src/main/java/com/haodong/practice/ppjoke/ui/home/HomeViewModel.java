@@ -7,6 +7,7 @@ import com.haodong.practice.lib_network.ApiResponse;
 import com.haodong.practice.lib_network.ApiService;
 import com.haodong.practice.lib_network.JsonCallback;
 import com.haodong.practice.lib_network.Request;
+import com.haodong.practice.ppjoke.login.UserManager;
 import com.haodong.practice.ppjoke.model.Feed;
 import com.haodong.practice.ppjoke.ui.AbsViewModel;
 import com.haodong.practice.ppjoke.ui.MutablePageKeyedDataSource;
@@ -87,7 +88,7 @@ public class HomeViewModel extends AbsViewModel<Feed> {
         //feeds/queryHotFeedsList
         Request request = ApiService.get("/feeds/queryHotFeedsList")
                 .addParam("feedType", mFeedType)
-                .addParam("userId", 0)
+                .addParam("userId", UserManager.get().getUserId())
                 .addParam("feedId", key)
                 .addParam("pageCount", count)
                 .responseType(new TypeReference<ArrayList<Feed>>() {

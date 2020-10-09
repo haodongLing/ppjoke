@@ -1,10 +1,8 @@
-package com.haodong.practice.ppjoke.view;
+package com.haodong.practice.libcommon.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
-
-import com.haodong.practice.libcommon.view.ViewHelper;
 
 import androidx.annotation.Nullable;
 

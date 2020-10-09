@@ -24,10 +24,10 @@ public abstract class AbsViewModel<T> extends ViewModel {
     public AbsViewModel() {
         config = new PagedList.Config.Builder()
                 .setPageSize(10)
-                .setInitialLoadSizeHint(12)
+                .setInitialLoadSizeHint(12) // setInitialLoadSizeHint>setPageSize 保证在页面数据加载完成之后，不立即加载第二页的数据
                 .setEnablePlaceholders(false).build();
         pageData = new LivePagedListBuilder(factory, config)
-                .setInitialLoadKey(0)
+                .setInitialLoadKey(0) // 初始化参数，传递的key
                 .setBoundaryCallback(callback)
                 .build();
 
@@ -54,11 +54,13 @@ public abstract class AbsViewModel<T> extends ViewModel {
 
         @Override
         public void onItemAtFrontLoaded(@NonNull T itemAtFront) {
+            /*列表的第一条数据加载*/
             boundaryPageData.postValue(true);
         }
 
         @Override
         public void onItemAtEndLoaded(@NonNull T itemAtEnd) {
+            /*列表的最后一条数据被加载*/
             super.onItemAtEndLoaded(itemAtEnd);
         }
     };

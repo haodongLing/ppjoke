@@ -66,7 +66,7 @@ public class Ugc extends BaseObservable implements Serializable {
             likeCount = likeCount - 1;
         }
         this.hasLiked = hasLiked;
-        notifyPropertyChanged(BR._all);
+        notifyPropertyChanged(BR._all); //重新执行数据的绑定
     }
 
 
