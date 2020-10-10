@@ -7,16 +7,21 @@ import com.alibaba.fastjson.TypeReference;
 import com.haodong.practice.libcommon.global.AppGlobals;
 import com.haodong.practice.ppjoke.model.BottomBar;
 import com.haodong.practice.ppjoke.model.Destination;
+import com.haodong.practice.ppjoke.model.SofaTab;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class AppConfig {
     private static HashMap<String, Destination> sDestConfig;
     private static BottomBar sBottomBar;
+    private static SofaTab sSofaTab, sFinTabConfig;
+
 
     public static HashMap<String, Destination> getDestConfig() {
         if (sDestConfig == null) {
@@ -33,6 +38,20 @@ public class AppConfig {
             sBottomBar = JSON.parseObject(content, BottomBar.class);
         }
         return sBottomBar;
+    }
+
+    public static SofaTab getSofaTabConfig() {
+        if (sSofaTab == null) {
+            String content = parseFile("sofa_tabs_config.json");
+            sSofaTab = JSON.parseObject(content, SofaTab.class);
+            Collections.sort(sSofaTab.tabs, new Comparator<SofaTab.Tabs>() {
+                @Override
+                public int compare(SofaTab.Tabs tabs, SofaTab.Tabs t1) {
+                    return tabs.index < t1.index ? -1 : 1;
+                }
+            });
+        }
+        return sSofaTab;
     }
 
     private static String parseFile(String fileName) {

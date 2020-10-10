@@ -127,7 +127,7 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
         //由于沙发Tab的几个子页面 复用了HomeFragment。
         //我们需要判断下 当前页面 它是否有ParentFragment.
         //当且仅当 它和它的ParentFragment均可见的时候，才能恢复视频播放
-        if (getParentFragment() != null) {
+        if (getParentFragment() != null) { // 说明Fragment 嵌套 了 fragment
             if (getParentFragment().isVisible() && isVisible()) {
                 Log.e("homefragment", "onResume: feedtype:" + feedType);
                 playDetector.onResume();
