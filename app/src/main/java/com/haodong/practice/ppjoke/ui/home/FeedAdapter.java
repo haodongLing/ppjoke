@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.haodong.practice.ppjoke.databinding.LayoutFeedTypeImageBinding;
 import com.haodong.practice.ppjoke.databinding.LayoutFeedTypeVideoBinding;
+import com.haodong.practice.ppjoke.detail.FeedDetailActivity;
 import com.haodong.practice.ppjoke.model.Feed;
 
 import androidx.annotation.NonNull;
@@ -63,6 +64,12 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bindData(getItem(position));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FeedDetailActivity.startFeedDetailActivity(mContext, getItem(position), mCategory);
+            }
+        });
     }
 
     @Override

@@ -21,6 +21,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.publish.CaptureActivity" />
+        <activity android:name=".detail.FeedDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/feedDetail"/>
     </application>
 
 </manifest>
