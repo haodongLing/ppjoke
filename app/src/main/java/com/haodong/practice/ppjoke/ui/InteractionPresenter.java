@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.haodong.practice.lib_network.ApiResponse;
 import com.haodong.practice.lib_network.ApiService;
 import com.haodong.practice.lib_network.JsonCallback;
+import com.haodong.practice.libcommon.extention.LiveDataBus;
 import com.haodong.practice.libcommon.global.AppGlobals;
 import com.haodong.practice.ppjoke.login.UserManager;
 import com.haodong.practice.ppjoke.model.Comment;
@@ -67,8 +68,8 @@ public class InteractionPresenter {
                         if (response.body != null) {
                             boolean hasLiked = response.body.getBoolean("hasLiked").booleanValue();
                             feed.getUgc().setHasLiked(hasLiked);
-//                            LiveDataBus.get().with(DATA_FROM_INTERACTION)
-//                                    .postValue(feed);
+                            LiveDataBus.get().with(DATA_FROM_INTERACTION)
+                                    .postValue(feed);
                         }
                     }
 

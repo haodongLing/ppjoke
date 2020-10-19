@@ -5,14 +5,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.haodong.practice.libcommon.extention.LiveDataBus;
 import com.haodong.practice.ppjoke.databinding.LayoutFeedTypeImageBinding;
 import com.haodong.practice.ppjoke.databinding.LayoutFeedTypeVideoBinding;
 import com.haodong.practice.ppjoke.detail.FeedDetailActivity;
+import com.haodong.practice.ppjoke.extention.AbsPagedListAdapter;
 import com.haodong.practice.ppjoke.model.Feed;
+import com.haodong.practice.ppjoke.ui.InteractionPresenter;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,7 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * <p>
  * version:
  */
-public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.ViewHolder> {
+public class FeedAdapter extends AbsPagedListAdapter<Feed, FeedAdapter.ViewHolder> {
     ViewDataBinding mViewDataBinding = null;
     Context mContext;
     LayoutInflater mInflater;
@@ -58,18 +65,39 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.ViewHolder> 
             mViewDataBinding = LayoutFeedTypeVideoBinding.inflate(mInflater);
 
         }
-        return new ViewHolder(mViewDataBinding.getRoot());
+        return new ViewHolder(mViewDataBinding.getRoot(),mViewDataBinding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bindData(getItem(position));
+    protected ViewHolder onCreateViewHolder2(ViewGroup parent, int viewType) {
+        ViewDataBinding binding = DataBindingUtil.inflate(mInflater, viewType, parent, false);
+        return new ViewHolder(binding.getRoot(), binding);
+    }
+
+
+    @Override
+    protected void onBindViewHolder2(ViewHolder holder, int position) {
+        final Feed feed = getItem(position);
+
+        holder.bindData(feed);
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FeedDetailActivity.startFeedDetailActivity(mContext, getItem(position), mCategory);
+                FeedDetailActivity.startFeedDetailActivity(mContext, feed, mCategory);
+                onStartFeedDetailActivity(feed);
+                if (mFeedObserver == null) {
+                    mFeedObserver = new FeedObserver();
+                    LiveDataBus.get()
+                            .with(InteractionPresenter.DATA_FROM_INTERACTION)
+                            .observe((LifecycleOwner) mContext, mFeedObserver);
+                }
+                mFeedObserver.setFeed(feed);
             }
         });
+    }
+    public void onStartFeedDetailActivity(Feed feed) {
+
     }
 
     @Override
@@ -78,9 +106,32 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.ViewHolder> 
         return feed.itemType;
     }
 
+    private FeedObserver mFeedObserver;
+
+    private class FeedObserver implements Observer<Feed> {
+        private Feed mFeed;
+
+        @Override
+        public void onChanged(Feed feed) {
+            if (mFeed.id != feed.id) {
+                return;
+            }
+            mFeed.author = feed.author;
+            mFeed.ugc = feed.ugc;
+            mFeed.notifyChange();
+        }
+
+        public void setFeed(Feed mFeed) {
+            this.mFeed = mFeed;
+        }
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public ViewHolder(@NonNull View itemView) {
+        private ViewDataBinding mBinding;
+
+        public ViewHolder(@NonNull View itemView, ViewDataBinding binding) {
             super(itemView);
+            mBinding = binding;
         }
 
         public void bindData(Feed item) {

@@ -126,8 +126,15 @@ public abstract class AbsPagedListAdapter<T, VH extends RecyclerView.ViewHolder>
 
     @Override
     public void onBindViewHolder(@NonNull VH holder, int position) {
-
+        if (isHeaderPosition(position) || isFooterPosition(position))
+            return;
+        //列表中正常类型的itemView的 position 咱们需要减去添加headerView的个数
+        position = position - mHeaders.size();
+        onBindViewHolder2(holder, position);
     }
+
+    protected abstract void onBindViewHolder2(VH holder, int position);
+
     @Override
     public void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
         if (!isHeaderPosition(holder.getAdapterPosition()) && !isFooterPosition(holder.getAdapterPosition())) {
